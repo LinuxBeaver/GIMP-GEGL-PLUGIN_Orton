@@ -23,7 +23,7 @@ The logic of an orton effect is to give a landscape and nature scenery a "dreamy
 
 ~/.var/app/org.gimp.GIMP/data/gegl-0.4/plug-ins
 
-Then Restart Gimp and go to "GEGL Operation" and look for "Ocean's Surface 2". Gimp 2.99.16+ users will find the filter in Filters>Render>Fun , where as 2.10 plugins will only be found in the drop down list.
+Then Restart Gimp and go to "GEGL Operation" and look for "Orton". Gimp 2.99.16+ users will find the filter in Filters>Artistic , where as 2.10 plugins will only be found in the drop down list.
 
 
 ## Compiling and Installing
