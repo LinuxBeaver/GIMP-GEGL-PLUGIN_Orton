@@ -1,4 +1,4 @@
-# X Plugin name
+# GEGL Orton
 
 ### Description of plugin: 
 
@@ -6,9 +6,8 @@
 
 ![image](https://github.com/user-attachments/assets/c74d24d5-036a-4a3a-b739-916f2d372a25)
 
-GEGL does an orton effect based on my following of a orton tutorial. I recreated a photography tutorial in GEGL syntax to make this
-
-# download  below
+GEGL does an orton effect based on my following of a orton tutorial. I recreated a photography tutorial in GEGL syntax to make this.
+The logic of an orton effect is to give a landscape and nature scenery a "dreamy surreal" effect.
 
 ## Directory to put Binaries (They do NOT go in the normal plugins folder)
 
