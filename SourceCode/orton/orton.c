@@ -32,12 +32,40 @@ end of syntax
 
 /*Properties go here*/
 
+property_enum(type, _("Type of Orton"),
+    ortons, ortonkind,
+    ORIGINAL)
+  description(_("Choose what type of orton you want"))
+
+enum_start (ortonkind)
+enum_value   (ORIGINAL, "original", N_("Original Orton theory"))
+enum_value   (JUNE2025REVISE, "june2025revision", N_("Revised Orton"))
+enum_value   (DARKTHEORY, "darkorton", N_("Dark Orton"))
+enum_value   (COLORTHEORY, "colororton", N_("Color Orton"))
+  enum_end (ortons)
+
+property_double (sharpen_layer_opacity, _("Opacity of the sharpen layer"), 1.0)
+   description(_("Opacity of the layer doing  the sharpen effect"))
+   value_range (0.0, 1.0)
+    ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
+
+
+
 property_double (sharpen, _("Sharpen original image below orton"), 0.0)
    description (_("The GEGL graph contains two layers one sharp one blured and blended. This slider controls the sharpness of the original image. In default sharpen is at 0 which means there is no sharpen unless the slider is moved up"))
    value_range (0.0, 2.0)
    ui_range    (0.0, 2.0)
    ui_gamma    (3.0)
    ui_meta     ("unit", "pixel-distance")
+    ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
+
+property_double (sharpen2, _("Sharpen"), 3.0)
+   description (_("Sharpen the virtual layer above"))
+   value_range (0.0, 10.0)
+   ui_range    (0.0, 10.0)
+   ui_gamma    (3.0)
+   ui_meta     ("unit", "pixel-distance")
+    ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
 
 
 
@@ -58,7 +86,7 @@ property_enum (blendmode, _("Blend Mode of Orton"),
    description (_("Blend mode's are most noticable when the gaussian blur opacity is high"))
     blendortonbeaver, blend_orton_beaver,
     GEGL_BLEND_MODE_TYPE_NORMAL)
-
+    ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 property_double (std_dev_x, _("Gaussian blur horizontal"), 7.0)
    description (_("Horizontal standard deviation for the horizontal axis"))
@@ -67,6 +95,7 @@ property_double (std_dev_x, _("Gaussian blur horizontal"), 7.0)
    ui_gamma    (3.0)
    ui_meta     ("unit", "pixel-distance")
    ui_meta     ("axis", "x")
+    ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 property_double (std_dev_y, _("Gaussian blur vertical"), 7.0)
    description (_("Vertical standard deviation (spatial scale factor)"))
@@ -75,24 +104,127 @@ property_double (std_dev_y, _("Gaussian blur vertical"), 7.0)
    ui_gamma    (3.0)
    ui_meta     ("unit", "pixel-distance")
    ui_meta     ("axis", "y")
+    ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
+
+property_double (std_dev_x2, _("Gaussian blur horizontal"), 14.0)
+   description (_("Horizontal standard deviation for the horizontal axis"))
+   value_range (0.0, 100.0)
+   ui_range    (0.24, 30.0)
+   ui_gamma    (3.0)
+   ui_meta     ("unit", "pixel-distance")
+   ui_meta     ("axis", "x")
+    ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
+
+property_double (std_dev_y2, _("Gaussian blur vertical"), 14.0)
+   description (_("Vertical standard deviation (spatial scale factor)"))
+   value_range (0.0, 100.0)
+   ui_range    (0.24, 30.0)
+   ui_gamma    (3.0)
+   ui_meta     ("unit", "pixel-distance")
+   ui_meta     ("axis", "y")
+    ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
+
 
 
 property_double (opacity, _("Gaussian blur opacity"), 0.6)
    description(_("Opacity of the overlayed gaussian blur"))
    value_range (0.0, 0.9)
    ui_range    (0.3, 0.9)
+    ui_meta ("visible", "!type {june2025revision}")
+
+property_double (opacity2, _("Gaussian blur opacity"), 0.9)
+   description(_("Opacity of the overlayed gaussian blur"))
+   value_range (0.0, 0.9)
+   ui_range    (0.3, 0.9)
+    ui_meta ("visible", "type {june2025revision, original}")
+
+
 
 property_double (dark, _("Dark value"), 1.8)
    description(_("Make the orton darker"))
   value_range (1.0, 3.0)
+    ui_meta ("visible", "!type {darkorton, colororton}")
 
 property_double (light, _("Light value"), 2.0)
    description(_("Make the orton lighter"))
    value_range (1.0, 3.0)
+    ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
+
+
+property_double (light2, _("Light value"), 1.2)
+   description(_("Make the orton lighter"))
+   value_range (1.0, 1.5)
+    ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
+
+property_double (luma, _("Luminance Darken"), -25.0)
+   description(_("Make the orton lighter"))
+   value_range (-40, 0.0)
+    ui_meta ("visible", "!type {june2025revision, original, colororton}")
+
 
 property_double (saturation, _("Saturation control"), 1.0)
    description(_("Control the orton's saturation"))
    value_range (0.0, 1.0)
+    ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
+
+property_double (saturation2, _("Saturation control"), 1.0)
+   description(_("Control the orton's saturation"))
+   value_range (0.0, 1.0)
+    ui_meta ("visible", "type {june2025revision}")
+
+enum_start (dark_orton_beaver)
+  enum_value (GEGL_KEEP_COLOR, "color",
+              N_("Keep Color"))
+  enum_value (GEGL_LUMINANCE,      "luminance",
+              N_("Luminance Desaturation"))
+  enum_value (GEGL_LUMA,      "luma",
+              N_("Luma Desaturation"))
+  enum_value (GEGL_LIGHTNES_HSL,      "lighness",
+              N_("Lightness Desaturation"))
+  enum_value (GEGL_AVERAGE_HSI,      "average",
+              N_("Average Desaturation"))
+/*
+  enum_value (GEGL_VALUE_HSV,      "value",
+              N_("Value Desaturation")) */
+enum_end (darkortonbeaver)
+
+property_enum (desaturation_setting, _("Desaturation setting"),
+   description (_("Rather full desaturation is enabled and if so what type of desaturation do you want?"))
+    darkortonbeaver, dark_orton_beaver,
+    GEGL_KEEP_COLOR)
+    ui_meta ("visible", "type {darkorton}")
+
+
+enum_start (blend_color_orton_beaver)
+  enum_value (GEGL_SOFTLIGHT, "softlight",
+              N_("Softlight"))
+  enum_value (GEGL_OVERLAY,      "overlay",
+              N_("Overlay"))
+  enum_value (GEGL_BURN,      "burn",
+              N_("Burn"))
+  enum_value (GEGL_LCHCOLOR,      "lchcolor",
+              N_("LCH Color"))
+  enum_value (GEGL_HSLCOLOR,      "hslcolor",
+              N_("HSL Color"))
+enum_end (blendcolorortonbeaver)
+
+property_enum (color_blend, _("Blend Color"),
+   description (_("Blend the color"))
+    blendcolorortonbeaver, blend_color_orton_beaver,
+    GEGL_OVERLAY)
+    ui_meta ("visible", "type {colororton}")
+
+property_double (color_opacity, _("Color Opacity"), 0.8)
+   description(_("Control the opacity of the color overlay"))
+   value_range (0.0, 1.0)
+    ui_meta ("visible", "type {colororton}")
+
+
+
+property_color (color, _("Color"), "#fff100")
+    description (_("The color to paint over the orton"))
+    ui_meta ("visible", "type {colororton}")
+
 
 #else
 
@@ -107,8 +239,11 @@ property_double (saturation, _("Saturation control"), 1.0)
 typedef struct
 {
  GeglNode *input;
+ GeglNode *input2;
  GeglNode *blur;
  GeglNode *over;
+ GeglNode *over2;
+ GeglNode *idref;
  GeglNode *multiply;
  GeglNode *screen;
  GeglNode *hardlight;
@@ -116,9 +251,42 @@ typedef struct
  GeglNode *lighten;
  GeglNode *gamma;
  GeglNode *opacity;
+ GeglNode *opacity2;
+ GeglNode *opacity3;
+ GeglNode *opacity4;
+ GeglNode *opacity5;
+ GeglNode *opacity6;
  GeglNode *saturation;
  GeglNode *sharpen;
  GeglNode *output;
+ GeglNode *output2;
+ GeglNode *over_re;
+ GeglNode *gamma_re;
+ GeglNode *multiply_re;
+ GeglNode *sharpen_re;
+ GeglNode *blur_re;
+ GeglNode *opacity_re;
+ GeglNode *saturation_re;
+ GeglNode *saturation_dark;
+ GeglNode *fix;
+ GeglNode *fix2;
+ GeglNode *luma;
+ GeglNode *light;
+ GeglNode *idrefdark;
+ GeglNode *gray;
+ GeglNode *keepcolor;
+ GeglNode *grayscale1;
+ GeglNode *grayscale2;
+ GeglNode *grayscale3;
+ GeglNode *grayscale4;
+ GeglNode *grayscale5;
+ GeglNode *color;
+ GeglNode *softlight;
+ GeglNode *overlay;
+ GeglNode *burn;
+ GeglNode *lchcolor;
+ GeglNode *hslcolor;
+
 }State;
 
 static void attach (GeglOperation *operation)
@@ -135,9 +303,18 @@ static void attach (GeglOperation *operation)
   state->input    = gegl_node_get_input_proxy (gegl, "input");
   state->output   = gegl_node_get_output_proxy (gegl, "output");
 
+  state->input2    = gegl_node_get_input_proxy (gegl, "input");
+  state->output2   = gegl_node_get_output_proxy (gegl, "output");
+
  state->blur = gegl_node_new_child (gegl, "operation", "gegl:gaussian-blur", "abyss-policy", TRUE, NULL);
 
  state->over = gegl_node_new_child (gegl, "operation", "gegl:over", NULL);
+
+ state->over2 = gegl_node_new_child (gegl, "operation", "gegl:over", NULL);
+
+
+ state->idref = gegl_node_new_child (gegl, "operation", "gegl:nop", NULL);
+
 
  state->multiply = gegl_node_new_child (gegl, "operation", "gegl:multiply", NULL);
 
@@ -153,23 +330,92 @@ static void attach (GeglOperation *operation)
 
  state->sharpen = gegl_node_new_child (gegl, "operation", "gegl:unsharp-mask", NULL);
 
+
+
+
  state->saturation = gegl_node_new_child (gegl, "operation", "gegl:saturation", NULL);
 
  state->opacity = gegl_node_new_child (gegl, "operation", "gegl:opacity", NULL);
+
+ state->opacity2 = gegl_node_new_child (gegl, "operation", "gegl:opacity",  NULL);
+
+ state->opacity3 = gegl_node_new_child (gegl, "operation", "gegl:opacity", "value", 0.7,  NULL);
+
+ state->opacity4 = gegl_node_new_child (gegl, "operation", "gegl:opacity", "value", 0.4,  NULL);
+
+ state->opacity5 = gegl_node_new_child (gegl, "operation", "gegl:opacity", "value", 1.15,  NULL);
+
+ state->opacity6 = gegl_node_new_child (gegl, "operation", "gegl:opacity", "value", 1.3,  NULL);
+
+ state->multiply_re = gegl_node_new_child (gegl, "operation", "gegl:multiply", NULL);
+
+ state->saturation_re = gegl_node_new_child (gegl, "operation", "gegl:saturation", NULL);
+
+ state->saturation_dark = gegl_node_new_child (gegl, "operation", "gegl:saturation", "scale", 0.0, NULL);
+
+ state->opacity_re = gegl_node_new_child (gegl, "operation", "gegl:opacity", NULL);
+
+ state->blur_re = gegl_node_new_child (gegl, "operation", "gegl:gaussian-blur", "abyss-policy", TRUE, NULL);
+
+ state->over_re = gegl_node_new_child (gegl, "operation", "gegl:over", NULL);
+
+ state->blur_re = gegl_node_new_child (gegl, "operation", "gegl:gaussian-blur", "abyss-policy", TRUE, NULL);
+
+ state->over_re = gegl_node_new_child (gegl, "operation", "gegl:over", NULL);
+
+ state->gamma_re = gegl_node_new_child (gegl, "operation", "gegl:gamma", NULL);
+
+ state->sharpen_re = gegl_node_new_child (gegl, "operation", "gegl:unsharp-mask", NULL);
+
+ state->light = gegl_node_new_child (gegl, "operation", "gegl:hue-chroma", NULL);
+
+ state->luma = gegl_node_new_child (gegl, "operation", "gimp:layer-mode", "layer-mode", 56, NULL);
+
+ state->idrefdark = gegl_node_new_child (gegl, "operation", "gegl:nop", NULL);
+
+ state->fix = gegl_node_new_child (gegl, "operation", "gegl:median-blur", "radius", 0, "abyss-policy", 0, NULL);
+
+ state->fix2 = gegl_node_new_child (gegl, "operation", "gegl:median-blur", "radius", 0, "abyss-policy", 0, NULL);
+
+ state->gray = gegl_node_new_child (gegl, "operation", "gegl:gray", NULL);
+
+ state->keepcolor = gegl_node_new_child (gegl, "operation", "gegl:nop", NULL);
+
+ state->grayscale1 = gegl_node_new_child (gegl, "operation", "gimp:desaturate", "mode", 0, NULL);
+
+ state->grayscale2 = gegl_node_new_child (gegl, "operation", "gimp:desaturate", "mode", 1, NULL);
+
+ state->grayscale3 = gegl_node_new_child (gegl, "operation", "gimp:desaturate", "mode", 2, NULL);
+
+ state->grayscale4 = gegl_node_new_child (gegl, "operation", "gimp:desaturate", "mode", 3, NULL);
+
+ state->grayscale5 = gegl_node_new_child (gegl, "operation", "gimp:desaturate", "mode", 4, NULL);
+
+ state->color = gegl_node_new_child (gegl, "operation", "gegl:color", NULL);
+
+ state->softlight = gegl_node_new_child (gegl, "operation", "gimp:layer-mode", "layer-mode", 35,  "composite-mode", 0, NULL);
+
+ state->burn = gegl_node_new_child (gegl, "operation", "gimp:layer-mode", "layer-mode", 43,  "composite-mode", 0, NULL);
+
+ state->overlay = gegl_node_new_child (gegl, "operation", "gimp:layer-mode", "layer-mode", 23,  "composite-mode", 0, NULL);
+
+state->lchcolor = gegl_node_new_child (gegl,
+                                    "operation", "gimp:layer-mode", "layer-mode", 26, "composite-mode", 0,  "blend-space", 3, NULL);
+
+state->hslcolor = gegl_node_new_child (gegl,
+                                  "operation", "gimp:layer-mode", "layer-mode", 39, "composite-mode", 0, NULL);
+
 
 /*meta redirect property to new child orders go here
 
  gegl_operation_meta_redirect (operation, "propertyname", state->newchildname,  "originalpropertyname");
 */
 
- gegl_operation_meta_redirect (operation, "dark", state->gamma,  "value");
- gegl_operation_meta_redirect (operation, "light", state->multiply,  "value");
- gegl_operation_meta_redirect (operation, "opacity", state->opacity,  "value");
- gegl_operation_meta_redirect (operation, "std-dev-x", state->blur,  "std-dev-x");
- gegl_operation_meta_redirect (operation, "std-dev-y", state->blur,  "std-dev-y");
- gegl_operation_meta_redirect (operation, "saturation", state->saturation,  "scale");
- gegl_operation_meta_redirect (operation, "sharpen", state->sharpen,  "scale");
+
 }
+
+
+
 
 static void
 update_graph (GeglOperation *operation)
@@ -177,6 +423,28 @@ update_graph (GeglOperation *operation)
   GeglProperties *o = GEGL_PROPERTIES (operation);
   State *state = o->user_data;
   if (!state) return;
+
+/*
+  gegl_node_disconnect(state->over2, "input");
+  gegl_node_disconnect(state->over2, "aux");
+
+
+
+gegl_node_disconnect(state->saturation, "input");
+gegl_node_disconnect(state->saturation, "output");
+gegl_node_disconnect(state->blur, "input");
+gegl_node_disconnect(state->blur, "output");
+gegl_node_disconnect(state->opacity, "input");
+gegl_node_disconnect(state->opacity, "output");
+
+  gegl_node_link_many (state->input,  state->blur, state->opacity, state->multiply,  state->gamma, state->saturation,  NULL);
+ gegl_node_disconnect(state->sharpen, "input");
+ gegl_node_disconnect(state->sharpen, "output");
+gegl_node_disconnect(state->multiply, "input");
+gegl_node_disconnect(state->multiply, "output");
+gegl_node_disconnect(state->gamma, "input");
+gegl_node_disconnect(state->gamma, "output");
+*/
 
   GeglNode *over = state->over; /* the default */
   switch (o->blendmode) {
@@ -187,28 +455,117 @@ update_graph (GeglOperation *operation)
     case GEGL_BLEND_MODE_TYPE_HARDLIGHT: over = state->hardlight; break;
 
 default: over = state->over;
+}
+
+
+
+  GeglNode *decolor = state->keepcolor; /* the default */
+  switch (o->desaturation_setting) {
+    case GEGL_KEEP_COLOR: decolor = state->keepcolor; break;
+    case GEGL_LUMINANCE: decolor = state->grayscale1; break;
+    case GEGL_LUMA: decolor = state->grayscale2; break;
+    case GEGL_LIGHTNES_HSL: decolor = state->grayscale3; break;
+    case GEGL_AVERAGE_HSI: decolor = state->grayscale4; break;
+ /*   case GEGL_VALUE_HSV: decolor = state->grayscale5; break;*/
+
+default: decolor = state->keepcolor;
+
+
 
 }
 
-  gegl_node_link_many (state->input, state->sharpen, over,  state->output,  NULL);
-  gegl_node_connect (over, "aux", state->saturation, "output");
-  gegl_node_link_many (state->input,  state->blur, state->opacity, state->multiply,  state->gamma, state->saturation,  NULL);
+  GeglNode *blendcolor = state->softlight; /* the default */
+  switch (o->color_blend) {
+    case GEGL_SOFTLIGHT: blendcolor = state->softlight; break;
+    case GEGL_OVERLAY: blendcolor = state->overlay; break;
+    case GEGL_BURN: blendcolor = state->burn; break;
+    case GEGL_LCHCOLOR: blendcolor = state->lchcolor; break;
+    case GEGL_HSLCOLOR: blendcolor = state->hslcolor; break;
+
+
+default: blendcolor = state->overlay;
+
+}
 
 
 /*optional connect from and too is here
   gegl_node_connect (state->blendmode, "aux", state->lastnodeinlist, "output"); */
-
+switch (o->type) { 
+       break;
+    case ORIGINAL:
+  gegl_node_link_many (state->input, state->sharpen, over,  state->output,  NULL);
+gegl_node_link_many (state->input, state->blur, state->opacity, state->multiply, state->gamma, state->saturation, NULL);
+  gegl_node_connect (over, "aux", state->saturation, "output");
+         break;
+    case JUNE2025REVISE:
+  gegl_node_link_many (state->input, over, state->idref, state->over2, state->output,  NULL);
+  gegl_node_connect (over, "aux", state->saturation_re, "output");
+  gegl_node_link_many (state->input,  state->blur_re, state->opacity_re, state->multiply_re,  state->gamma_re, state->saturation_re,  NULL);
+  gegl_node_connect (state->over2, "aux", state->opacity3, "output");
+  gegl_node_link_many (state->idref,  state->sharpen_re, state->opacity2, state->opacity3,  NULL);
+ break;
+    case DARKTHEORY:
+  gegl_node_link_many (state->input, decolor, over, state->idref, state->over2,  state->output,  NULL);
+  gegl_node_connect (over, "aux", state->luma, "output");
+  gegl_node_link_many (state->input,  state->blur_re, state->opacity, state->opacity5, state->multiply_re,  state->saturation_dark, state->fix, state->idrefdark, state->luma,   NULL);
+  gegl_node_connect (state->over2, "aux", state->gray, "output");
+  gegl_node_link_many (state->idref,  state->sharpen_re, state->opacity2, state->opacity4, state->gray,  NULL);
+  gegl_node_connect (state->luma, "aux", state->light, "output");
+  gegl_node_link_many (state->idrefdark, state->light,  NULL);
+ break;
+    case COLORTHEORY:
+  gegl_node_link_many (state->input, state->grayscale1, over, state->idref, state->over2,  state->fix2, blendcolor,  state->output,  NULL);
+  gegl_node_connect (over, "aux", state->fix, "output");
+  gegl_node_link_many (state->input,  state->blur_re, state->opacity, state->opacity6, state->multiply_re,  state->saturation_dark, state->fix,   NULL);
+  gegl_node_connect (state->over2, "aux", state->gray, "output");
+  gegl_node_link_many (state->idref,  state->sharpen_re, state->opacity2, state->opacity4, state->gray,  NULL);
+  gegl_node_connect (blendcolor, "aux", state->color, "output");
+ break;
 }
+
+ gegl_operation_meta_redirect (operation, "dark", state->gamma,  "value");
+ gegl_operation_meta_redirect (operation, "light", state->multiply,  "value");
+ gegl_operation_meta_redirect (operation, "opacity", state->opacity,  "value");
+ gegl_operation_meta_redirect (operation, "std-dev-x", state->blur,  "std-dev-x");
+ gegl_operation_meta_redirect (operation, "std-dev-y", state->blur,  "std-dev-y");
+ gegl_operation_meta_redirect (operation, "saturation", state->saturation,  "scale");
+ gegl_operation_meta_redirect (operation, "sharpen", state->sharpen,  "scale");
+
+ gegl_operation_meta_redirect (operation, "sharpen_layer_opacity", state->opacity2,  "value");
+
+
+ gegl_operation_meta_redirect (operation, "dark", state->gamma_re,  "value");
+ gegl_operation_meta_redirect (operation, "light2", state->multiply_re,  "value");
+ gegl_operation_meta_redirect (operation, "std-dev-x", state->blur_re,  "std-dev-x");
+ gegl_operation_meta_redirect (operation, "std-dev-y", state->blur_re,  "std-dev-y");
+ gegl_operation_meta_redirect (operation, "saturation2", state->saturation_re,  "scale");
+ gegl_operation_meta_redirect (operation, "std-dev-x2", state->blur_re,  "std-dev-x");
+ gegl_operation_meta_redirect (operation, "std-dev-y2", state->blur_re,  "std-dev-y");
+ gegl_operation_meta_redirect (operation, "sharpen2", state->sharpen_re,  "scale");
+ gegl_operation_meta_redirect (operation, "opacity2", state->opacity_re,  "value");
+
+ gegl_operation_meta_redirect (operation, "luma", state->light,  "lightness");
+
+ gegl_operation_meta_redirect (operation, "color", state->color,  "value");
+
+ gegl_operation_meta_redirect (operation, "color_opacity", blendcolor,  "opacity");
+
+ }  
+
+
+
+
 
 static void
 gegl_op_class_init (GeglOpClass *klass)
 {
-  GeglOperationClass *operation_class;
-GeglOperationMetaClass *operation_meta_class = GEGL_OPERATION_META_CLASS (klass);
-  operation_class = GEGL_OPERATION_CLASS (klass);
 
-  operation_class->attach = attach;
+  GeglOperationClass     *operation_class      = GEGL_OPERATION_CLASS (klass);
+  GeglOperationMetaClass *operation_meta_class = GEGL_OPERATION_META_CLASS (klass);
+
+  operation_class->attach      = attach;
   operation_meta_class->update = update_graph;
+
 
   gegl_operation_class_set_keys (operation_class,
     "name",        "lb:orton",
@@ -216,7 +573,6 @@ GeglOperationMetaClass *operation_meta_class = GEGL_OPERATION_META_CLASS (klass)
     "reference-hash", "germancockroach",
     "description", _("Orton effect"),
 /*<Image>/Colors <Image>/Filters are top level menus in GIMP*/
-    "gimp:menu-path", "<Image>/Filters/Artistic",
     "gimp:menu-label", _("Orton Effect..."),
     NULL);
 }
