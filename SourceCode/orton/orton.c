@@ -45,14 +45,14 @@ enum_value   (COLORTHEORY, "colororton", N_("Color Orton"))
   enum_end (ortons)
 
 property_double (sharpen_layer_opacity, _("Opacity of the sharpen layer"), 1.0)
-   description(_("Opacity of the layer doing  the sharpen effect"))
+   description(_("(all but original) Opacity of the layer doing  the sharpen effect"))
    value_range (0.0, 1.0)
     ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
 
 
 
 property_double (sharpen, _("Sharpen original image below orton"), 0.0)
-   description (_("The GEGL graph contains two layers one sharp one blured and blended. This slider controls the sharpness of the original image. In default sharpen is at 0 which means there is no sharpen unless the slider is moved up"))
+   description (_("(original only) The GEGL graph contains two layers one sharp one blured and blended. This slider controls the sharpness of the original image. In default sharpen is at 0 which means there is no sharpen unless the slider is moved up"))
    value_range (0.0, 2.0)
    ui_range    (0.0, 2.0)
    ui_gamma    (3.0)
@@ -60,7 +60,7 @@ property_double (sharpen, _("Sharpen original image below orton"), 0.0)
     ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 property_double (sharpen2, _("Sharpen"), 3.0)
-   description (_("Sharpen the virtual layer above"))
+   description (_("(all but original) Sharpen the virtual layer above"))
    value_range (0.0, 10.0)
    ui_range    (0.0, 10.0)
    ui_gamma    (3.0)
@@ -83,13 +83,13 @@ enum_start (blend_orton_beaver)
 enum_end (blendortonbeaver)
 
 property_enum (blendmode, _("Blend Mode of Orton"),
-   description (_("Blend mode's are most noticable when the gaussian blur opacity is high"))
+   description (_("(original only) Blend mode's are most noticable when the gaussian blur opacity is high"))
     blendortonbeaver, blend_orton_beaver,
     GEGL_BLEND_MODE_TYPE_NORMAL)
     ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 property_double (std_dev_x, _("Gaussian blur horizontal"), 7.0)
-   description (_("Horizontal standard deviation for the horizontal axis"))
+   description (_("(original only) Horizontal standard deviation for the horizontal axis"))
    value_range (0.0, 100.0)
    ui_range    (0.24, 30.0)
    ui_gamma    (3.0)
@@ -98,7 +98,7 @@ property_double (std_dev_x, _("Gaussian blur horizontal"), 7.0)
     ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 property_double (std_dev_y, _("Gaussian blur vertical"), 7.0)
-   description (_("Vertical standard deviation (spatial scale factor)"))
+   description (_("(original only) Vertical standard deviation (spatial scale factor)"))
    value_range (0.0, 100.0)
    ui_range    (0.24, 30.0)
    ui_gamma    (3.0)
@@ -107,7 +107,7 @@ property_double (std_dev_y, _("Gaussian blur vertical"), 7.0)
     ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 property_double (std_dev_x2, _("Gaussian blur horizontal"), 14.0)
-   description (_("Horizontal standard deviation for the horizontal axis"))
+   description (_("(all but original) Horizontal standard deviation for the horizontal axis"))
    value_range (0.0, 100.0)
    ui_range    (0.24, 30.0)
    ui_gamma    (3.0)
@@ -116,7 +116,7 @@ property_double (std_dev_x2, _("Gaussian blur horizontal"), 14.0)
     ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
 
 property_double (std_dev_y2, _("Gaussian blur vertical"), 14.0)
-   description (_("Vertical standard deviation (spatial scale factor)"))
+   description (_("(all but original) Vertical standard deviation (spatial scale factor)"))
    value_range (0.0, 100.0)
    ui_range    (0.24, 30.0)
    ui_gamma    (3.0)
@@ -127,50 +127,56 @@ property_double (std_dev_y2, _("Gaussian blur vertical"), 14.0)
 
 
 property_double (opacity, _("Gaussian blur opacity"), 0.6)
-   description(_("Opacity of the overlayed gaussian blur"))
+   description(_("(all excluding revision) Opacity of the overlayed gaussian blur"))
    value_range (0.0, 0.9)
    ui_range    (0.3, 0.9)
     ui_meta ("visible", "!type {june2025revision}")
 
 property_double (opacity2, _("Gaussian blur opacity"), 0.9)
-   description(_("Opacity of the overlayed gaussian blur"))
+   description(_("(revision only) Opacity of the overlayed gaussian blur"))
    value_range (0.0, 0.9)
    ui_range    (0.3, 0.9)
-    ui_meta ("visible", "type {june2025revision, original}")
+    ui_meta ("visible", "type {june2025revision}")
 
 
 
 property_double (dark, _("Dark value"), 1.8)
-   description(_("Make the orton darker"))
+   description(_("(original and revised) Make the orton darker"))
   value_range (1.0, 3.0)
     ui_meta ("visible", "!type {darkorton, colororton}")
 
 property_double (light, _("Light value"), 2.0)
-   description(_("Make the orton lighter"))
+   description(_("(original) Make the orton lighter"))
    value_range (1.0, 3.0)
     ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 
 property_double (light2, _("Light value"), 1.2)
-   description(_("Make the orton lighter"))
+   description(_("(all excluding original) Make the orton lighter"))
    value_range (1.0, 1.5)
     ui_meta ("visible", "type {june2025revision, darkorton, colororton}")
 
 property_double (luma, _("Luminance Darken"), -25.0)
-   description(_("Make the orton lighter"))
+   description(_("(dark orton only) Luminance darkening of the orton"))
    value_range (-40, 0.0)
     ui_meta ("visible", "!type {june2025revision, original, colororton}")
 
 
 property_double (saturation, _("Saturation control"), 1.0)
-   description(_("Control the orton's saturation"))
+   description(_("(original only) Control the orton's saturation"))
    value_range (0.0, 1.0)
     ui_meta ("visible", "!type {june2025revision, darkorton, colororton}")
 
 property_double (saturation2, _("Saturation control"), 1.0)
-   description(_("Control the orton's saturation"))
+   description(_("(revision only) Control the orton's saturation"))
    value_range (0.0, 1.0)
     ui_meta ("visible", "type {june2025revision}")
+
+property_double (hardlight_highout, _("Hardlight High output blend"), 1.0)
+   description(_("(dark orton only) Levels high output blended with the hardlight blend mode. At 0 it is entirely removed. "))
+   value_range (0.0, 1.0)
+    ui_meta ("visible", "type {darkorton}")
+
 
 enum_start (dark_orton_beaver)
   enum_value (GEGL_KEEP_COLOR, "color",
@@ -189,7 +195,7 @@ enum_start (dark_orton_beaver)
 enum_end (darkortonbeaver)
 
 property_enum (desaturation_setting, _("Desaturation setting"),
-   description (_("Rather full desaturation is enabled and if so what type of desaturation do you want?"))
+   description (_(" (dark orton only) Rather full desaturation is enabled and if so what type of desaturation do you want?"))
     darkortonbeaver, dark_orton_beaver,
     GEGL_KEEP_COLOR)
     ui_meta ("visible", "type {darkorton}")
@@ -209,22 +215,26 @@ enum_start (blend_color_orton_beaver)
 enum_end (blendcolorortonbeaver)
 
 property_enum (color_blend, _("Blend Color"),
-   description (_("Blend the color"))
+   description (_("(color only) Blend the color"))
     blendcolorortonbeaver, blend_color_orton_beaver,
     GEGL_OVERLAY)
     ui_meta ("visible", "type {colororton}")
 
 property_double (color_opacity, _("Color Opacity"), 0.8)
-   description(_("Control the opacity of the color overlay"))
+   description(_("(color only) Control the opacity of the color overlay"))
    value_range (0.0, 1.0)
     ui_meta ("visible", "type {colororton}")
 
 
 
 property_color (color, _("Color"), "#fff100")
-    description (_("The color to paint over the orton"))
+    description (_("(color only) The color to paint over the orton"))
     ui_meta ("visible", "type {colororton}")
 
+
+property_boolean (smooth_band, _("Smooth bandings?"), FALSE)
+    description  (_("(dark orton only) smooth the dark orton's bandings, it will be very slow"))
+    ui_meta ("visible", "type {darkorton}")
 
 #else
 
@@ -272,7 +282,6 @@ typedef struct
  GeglNode *fix2;
  GeglNode *luma;
  GeglNode *light;
- GeglNode *idrefdark;
  GeglNode *gray;
  GeglNode *keepcolor;
  GeglNode *grayscale1;
@@ -286,6 +295,12 @@ typedef struct
  GeglNode *burn;
  GeglNode *lchcolor;
  GeglNode *hslcolor;
+ GeglNode *idrefdark;
+ GeglNode *idrefdark2;
+ GeglNode *hardlightdark;
+ GeglNode *levelsdark;
+ GeglNode *denoise;
+ GeglNode *dontdenoise;
 
 }State;
 
@@ -405,6 +420,16 @@ state->lchcolor = gegl_node_new_child (gegl,
 state->hslcolor = gegl_node_new_child (gegl,
                                   "operation", "gimp:layer-mode", "layer-mode", 39, "composite-mode", 0, NULL);
 
+state->hardlightdark = gegl_node_new_child (gegl,
+                                  "operation", "gimp:layer-mode", "layer-mode", 44, "composite-mode", 0, NULL);
+
+ state->idrefdark2 = gegl_node_new_child (gegl, "operation", "gegl:nop", NULL);
+
+ state->levelsdark = gegl_node_new_child (gegl, "operation", "gegl:multiply", "value", 0.5, NULL);
+
+ state->denoise = gegl_node_new_child (gegl, "operation", "gegl:denoise-dct", "sigma", 4.0, NULL);
+
+ state->dontdenoise = gegl_node_new_child (gegl, "operation", "gegl:nop", NULL);
 
 /*meta redirect property to new child orders go here
 
@@ -414,21 +439,17 @@ state->hslcolor = gegl_node_new_child (gegl,
 
 }
 
-
-
-
 static void
 update_graph (GeglOperation *operation)
 {
   GeglProperties *o = GEGL_PROPERTIES (operation);
   State *state = o->user_data;
   if (!state) return;
+  GeglNode *smooth = state->dontdenoise;
 
 /*
   gegl_node_disconnect(state->over2, "input");
   gegl_node_disconnect(state->over2, "aux");
-
-
 
 gegl_node_disconnect(state->saturation, "input");
 gegl_node_disconnect(state->saturation, "output");
@@ -446,6 +467,8 @@ gegl_node_disconnect(state->gamma, "input");
 gegl_node_disconnect(state->gamma, "output");
 */
 
+
+
   GeglNode *over = state->over; /* the default */
   switch (o->blendmode) {
     case GEGL_BLEND_MODE_TYPE_NORMAL: over = state->over; break;
@@ -457,8 +480,6 @@ gegl_node_disconnect(state->gamma, "output");
 default: over = state->over;
 }
 
-
-
   GeglNode *decolor = state->keepcolor; /* the default */
   switch (o->desaturation_setting) {
     case GEGL_KEEP_COLOR: decolor = state->keepcolor; break;
@@ -469,8 +490,6 @@ default: over = state->over;
  /*   case GEGL_VALUE_HSV: decolor = state->grayscale5; break;*/
 
 default: decolor = state->keepcolor;
-
-
 
 }
 
@@ -485,9 +504,13 @@ default: decolor = state->keepcolor;
 
 default: blendcolor = state->overlay;
 
+
+
+
 }
 
-
+  if (o->smooth_band) smooth  = state->denoise;
+  if (!o->smooth_band) smooth  = state->dontdenoise;
 /*optional connect from and too is here
   gegl_node_connect (state->blendmode, "aux", state->lastnodeinlist, "output"); */
 switch (o->type) { 
@@ -498,24 +521,26 @@ gegl_node_link_many (state->input, state->blur, state->opacity, state->multiply,
   gegl_node_connect (over, "aux", state->saturation, "output");
          break;
     case JUNE2025REVISE:
-  gegl_node_link_many (state->input, over, state->idref, state->over2, state->output,  NULL);
-  gegl_node_connect (over, "aux", state->saturation_re, "output");
+  gegl_node_link_many (state->input, state->over, state->idref, state->over2, state->output,  NULL);
+  gegl_node_connect (state->over, "aux", state->saturation_re, "output");
   gegl_node_link_many (state->input,  state->blur_re, state->opacity_re, state->multiply_re,  state->gamma_re, state->saturation_re,  NULL);
   gegl_node_connect (state->over2, "aux", state->opacity3, "output");
   gegl_node_link_many (state->idref,  state->sharpen_re, state->opacity2, state->opacity3,  NULL);
  break;
     case DARKTHEORY:
-  gegl_node_link_many (state->input, decolor, over, state->idref, state->over2,  state->output,  NULL);
-  gegl_node_connect (over, "aux", state->luma, "output");
+  gegl_node_link_many (state->input, decolor, state->over, state->idref, state->over2,  state->idrefdark2, state->hardlightdark, smooth,  state->output,  NULL);
+  gegl_node_connect (state->over, "aux", state->luma, "output");
   gegl_node_link_many (state->input,  state->blur_re, state->opacity, state->opacity5, state->multiply_re,  state->saturation_dark, state->fix, state->idrefdark, state->luma,   NULL);
   gegl_node_connect (state->over2, "aux", state->gray, "output");
   gegl_node_link_many (state->idref,  state->sharpen_re, state->opacity2, state->opacity4, state->gray,  NULL);
   gegl_node_connect (state->luma, "aux", state->light, "output");
   gegl_node_link_many (state->idrefdark, state->light,  NULL);
+  gegl_node_connect (state->hardlightdark, "aux", state->levelsdark, "output");
+  gegl_node_link_many (state->idrefdark2, state->levelsdark,  NULL);
  break;
     case COLORTHEORY:
-  gegl_node_link_many (state->input, state->grayscale1, over, state->idref, state->over2,  state->fix2, blendcolor,  state->output,  NULL);
-  gegl_node_connect (over, "aux", state->fix, "output");
+  gegl_node_link_many (state->input, state->grayscale1, state->over, state->idref, state->over2,  state->fix2, blendcolor, state->output,  NULL);
+  gegl_node_connect (state->over, "aux", state->fix, "output");
   gegl_node_link_many (state->input,  state->blur_re, state->opacity, state->opacity6, state->multiply_re,  state->saturation_dark, state->fix,   NULL);
   gegl_node_connect (state->over2, "aux", state->gray, "output");
   gegl_node_link_many (state->idref,  state->sharpen_re, state->opacity2, state->opacity4, state->gray,  NULL);
@@ -549,6 +574,8 @@ gegl_node_link_many (state->input, state->blur, state->opacity, state->multiply,
  gegl_operation_meta_redirect (operation, "color", state->color,  "value");
 
  gegl_operation_meta_redirect (operation, "color_opacity", blendcolor,  "opacity");
+
+ gegl_operation_meta_redirect (operation, "hardlight_highout", state->hardlightdark,  "opacity");
 
  }  
 
