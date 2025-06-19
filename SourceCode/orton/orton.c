@@ -600,6 +600,7 @@ gegl_op_class_init (GeglOpClass *klass)
     "reference-hash", "germancockroach",
     "description", _("Orton effect"),
 /*<Image>/Colors <Image>/Filters are top level menus in GIMP*/
+    "gimp:menu-path", "<Image>/Filters/Artistic",
     "gimp:menu-label", _("Orton Effect..."),
     NULL);
 }
